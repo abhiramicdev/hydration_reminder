@@ -1,11 +1,3 @@
-// return MaterialApp(
-//   title: 'Water Tracker',
-//   theme: ThemeData(
-//     colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-//     useMaterial3: true,
-//   ),
-//   home: const MyHomePage(),
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hydration_reminder/screens/launch_screen.dart';
@@ -21,13 +13,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Hydration Tracker',
-      // theme: ThemeData.light(),
       theme: ThemeData(
-        fontFamily: 'Rubik',
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF4CC9F0),
-        ),
         useMaterial3: true,
+        fontFamily: 'Rubik',
+        primarySwatch: const MaterialColor(0xFF4CC9F0, {
+          50: Color(0xFF4CC9F0),
+          100: Color(0xFF49C8E7),
+          200: Color(0xFF43C6DB),
+          300: Color(0xFF3CC3D1),
+          400: Color(0xFF2996D0),
+          500: Color(0xFF2283CA),
+          600: Color(0xFF1B70C4),
+          700: Color(0xFF155DDD),
+          800: Color(0xFF0F4AD8),
+          900: Color(0xFF0F4AD8),
+        }),
       ),
       home: const SplashScreen(),
       builder: (context, child) {
@@ -64,10 +64,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(color: Colors.white),
-      child: const Center(
-        child: Text('Home Page'),
+    return Scaffold(
+      appBar: AppBar(),
+      body: Container(
+        decoration: const BoxDecoration(color: Colors.white),
+        child: const Center(
+          child: Text('Home Page'),
+        ),
       ),
     );
   }
