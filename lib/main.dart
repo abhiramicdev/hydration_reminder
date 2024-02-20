@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Hydration Tracker',
       theme: ThemeData(
         useMaterial3: true,
-        fontFamily: 'Nunitos',
+        // fontFamily: 'Nunitos',
         primarySwatch: const MaterialColor(0xFF4CC9F0, {
           50: Color(0xFF4CC9F0),
           100: Color(0xFF49C8E7),
@@ -29,7 +29,6 @@ class MyApp extends StatelessWidget {
           800: Color(0xFF0F4AD8),
           900: Color(0xFF0F4AD8),
         }),
-      
       ),
       home: const SplashScreen(),
       builder: (context, child) {

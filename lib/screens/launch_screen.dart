@@ -24,6 +24,7 @@ class LaunchBackground extends StatelessWidget {
           SizedBox(
             width: ScreenSize.getScreenWidth(context) * .45,
             child: Lottie.asset('assets/animations/xtuhjXszIE.json'),
+            
           ),
         ],
       ),
