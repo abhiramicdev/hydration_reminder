@@ -3,6 +3,7 @@ import 'package:hydration_reminder/screens/profile_screen.dart';
 import 'package:hydration_reminder/utils/app_colors.dart';
 import 'package:hydration_reminder/utils/screen_size.dart';
 import 'package:hydration_reminder/utils/screen_title.dart';
+import 'package:hydration_reminder/utils/spacer.dart';
 import 'package:hydration_reminder/utils/week_day.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,7 +52,7 @@ class _ReceptionScreenState extends State<ReceptionScreen> {
                   animationString: 'assets/animations/morning_sun_anim.json',
                   question: 'Please enter your name', keyType: 'username',
                 ),
-                _spacer12(),
+                spacer12(),
                 //Weight is required to evaluate water nitake
                 // todo: Add suffix text Kg
                 InfoCard(
@@ -62,7 +63,7 @@ class _ReceptionScreenState extends State<ReceptionScreen> {
                   animationString: 'assets/animations/body_weight_anim.json',
                   question: 'Enter your body weight in kg', keyType: 'weight',
                 ),
-                _spacer12(),
+                spacer12(),
                 //Gender is rgq to evaluate water intake
                 // TODO: Add gender dropdown or wheel
                 InfoCard(
@@ -73,7 +74,7 @@ class _ReceptionScreenState extends State<ReceptionScreen> {
                   question: 'Choose your gender',
                   keyType: 'gender',
                 ),
-                _spacer12(),
+                spacer12(),
                 //Age is rqd to evaluate water intake
                 //TODO : add DATE PICKER AND CONVERT TO STRING
                 InfoCard(
@@ -84,7 +85,7 @@ class _ReceptionScreenState extends State<ReceptionScreen> {
                   question: 'Pick your birthdate',
                   keyType: 'age',
                 ),
-                _spacer12(),
+                spacer12(),
                 ElevatedButton(
                   child: Text(
                     'Continue',
@@ -114,24 +115,13 @@ class _ReceptionScreenState extends State<ReceptionScreen> {
                     ),
                   ),
                 ),
-                _spacer12(),
+                spacer12(),
               ],
             ),
           ),
         ),
       ),
     );
-  }
-}
-
-class _spacer12 extends StatelessWidget {
-  const _spacer12({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(height: 12);
   }
 }
 
@@ -235,5 +225,3 @@ class _InfoCardState extends State<InfoCard> {
     debugPrint('User $keyString is $nameis');
   }
 }
-
-

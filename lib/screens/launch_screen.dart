@@ -16,15 +16,14 @@ class LaunchBackground extends StatelessWidget {
           const Text(
             'Stay hydrated!',
             style: TextStyle(
-              fontSize: 42,
+              fontSize: 40,
               fontWeight: FontWeight.bold,
               color: AppColors.primary,
             ),
           ),
           SizedBox(
             width: ScreenSize.getScreenWidth(context) * .45,
-            child: Lottie.asset('assets/animations/xtuhjXszIE.json'),
-            
+            child: Lottie.asset('assets/animations/drinking.json'),
           ),
         ],
       ),
