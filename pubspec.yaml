@@ -39,6 +39,7 @@ dependencies:
   flutter_hooks: ^0.20.5
   flame: ^1.16.0
   video_player: ^2.8.2
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

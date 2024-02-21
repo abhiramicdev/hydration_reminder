@@ -27,3 +27,25 @@ class ScreenTitle extends StatelessWidget {
     );
   }
 }
+
+class cardTitle extends StatelessWidget {
+  const cardTitle({
+    super.key,
+    required this.title,
+    required this.titleColor,
+  });
+
+  final String title;
+  final Color titleColor;
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.w500,
+        color: titleColor,
+      ),
+    );
+  }
+}

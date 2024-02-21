@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hydration_reminder/screens/profile_screen.dart';
 import 'package:hydration_reminder/utils/app_colors.dart';
 import 'package:hydration_reminder/utils/screen_size.dart';
 import 'package:hydration_reminder/utils/screen_title.dart';
+import 'package:hydration_reminder/utils/week_day.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Reception screen
 /* Tell the user why they will be happy here and what an amazing choice they have made */
@@ -14,6 +17,7 @@ class ReceptionScreen extends StatefulWidget {
 }
 
 class _ReceptionScreenState extends State<ReceptionScreen> {
+  final _formKey = GlobalKey<FormState>();
   late int tWeekDay;
   @override
   void initState() {
@@ -29,77 +33,109 @@ class _ReceptionScreenState extends State<ReceptionScreen> {
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ScreenTitle(
-                titleString: 'Happy ${weekDaySwitcher(tWeekDay)}!',
-              ),
-              InfoCard(
-                cardColor: AppColors.primary,
-                cardTitle: 'Tell us about yourself!',
-                // cardTitle: 'Enter your user anme',
-                cardTitlecolor: AppColors.primary600,
-                animationString: 'assets/animations/morning_sun_anim.json',
-                question: 'Please enter your name',
-              ),
-              SizedBox(height: 12),
-              InfoCard(
-                cardColor: Colors.lightBlue.shade100,
-                // cardTitle: 'Tell us about yourself!',
-                cardTitle: 'Your body weight',
-                cardTitlecolor: AppColors.primary600,
-                animationString: 'assets/animations/body_weight_anim.json',
-                question: 'Enter your body weight in kg',
-              ),
-              SizedBox(height: 12),
-              InfoCard(
-                cardColor: Colors.lightGreen.shade200,
-                cardTitle: 'Your gender',
-                cardTitlecolor: Colors.teal,
-                animationString: 'assets/animations/gender_anim.json',
-                question: 'Choose your gender',
-              ),
-              SizedBox(height: 12),
-              InfoCard(
-                cardColor: Colors.pink.shade100,
-                cardTitle: 'Tell us your birthday',
-                cardTitlecolor: AppColors.primary600,
-                animationString: 'assets/animations/fgUMTF1Tir.json',
-                question: 'Pick your birthdate',
-              ),
-            ],
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ScreenTitle(
+                  titleString: 'Happy ${weekDaySwitcher(tWeekDay)}!',
+                ),
+
+                // Name to be stored in sharedpreference
+                InfoCard(
+                  cardColor: AppColors.primary,
+                  cardTitle: 'Tell us about yourself!',
+                  // cardTitle: 'Enter your user anme',
+                  cardTitlecolor: AppColors.primary600,
+                  animationString: 'assets/animations/morning_sun_anim.json',
+                  question: 'Please enter your name', keyType: 'username',
+                ),
+                _spacer12(),
+                //Weight is required to evaluate water nitake
+                // todo: Add suffix text Kg
+                InfoCard(
+                  cardColor: Colors.lightBlue.shade100,
+                  // cardTitle: 'Tell us about yourself!',
+                  cardTitle: 'Your body weight',
+                  cardTitlecolor: AppColors.primary600,
+                  animationString: 'assets/animations/body_weight_anim.json',
+                  question: 'Enter your body weight in kg', keyType: 'weight',
+                ),
+                _spacer12(),
+                //Gender is rgq to evaluate water intake
+                // TODO: Add gender dropdown or wheel
+                InfoCard(
+                  cardColor: Colors.lightGreen.shade200,
+                  cardTitle: 'Your gender',
+                  cardTitlecolor: Colors.teal,
+                  animationString: 'assets/animations/gender_anim.json',
+                  question: 'Choose your gender',
+                  keyType: 'gender',
+                ),
+                _spacer12(),
+                //Age is rqd to evaluate water intake
+                //TODO : add DATE PICKER AND CONVERT TO STRING
+                InfoCard(
+                  cardColor: Colors.pink.shade100,
+                  cardTitle: 'Tell us your birthday',
+                  cardTitlecolor: AppColors.primary600,
+                  animationString: 'assets/animations/fgUMTF1Tir.json',
+                  question: 'Pick your birthdate',
+                  keyType: 'age',
+                ),
+                _spacer12(),
+                ElevatedButton(
+                  child: Text(
+                    'Continue',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      // If the form is valid, display a snackbar. In the real world,
+                      // you'd often call a server or save the information in a database.
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          backgroundColor: Colors.green,
+                          content: Text('Processing Data'),
+                        ),
+                      );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ProfileScreen(),
+                        ),
+                      );
+                    }
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      AppColors.primary700,
+                    ),
+                  ),
+                ),
+                _spacer12(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+}
 
-  String weekDaySwitcher(int weekday) {
-    switch (weekday) {
-      case 1:
-        return "Monday";
+class _spacer12 extends StatelessWidget {
+  const _spacer12({
+    super.key,
+  });
 
-      case 2:
-        return 'Tuesday';
-      case 3:
-        return 'Wednesday';
-      case 4:
-        return 'Thursday';
-      case 5:
-        return 'Friday';
-      case 6:
-        return 'Saturday';
-      case 7:
-        return 'Sunday';
-
-      default:
-        return 'Day';
-    }
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(height: 12);
   }
 }
 
-class InfoCard extends StatelessWidget {
+class InfoCard extends StatefulWidget {
   const InfoCard({
     super.key,
     required this.cardTitle,
@@ -107,19 +143,25 @@ class InfoCard extends StatelessWidget {
     required this.cardColor,
     required this.cardTitlecolor,
     required this.question,
-    // required this.textEditingController,
+    required this.keyType,
   });
   final Color cardColor;
   final String cardTitle;
   final Color cardTitlecolor;
   final String animationString;
   final String question;
-  // final TextEditingController textEditingController;
+  final String keyType;
 
+  @override
+  State<InfoCard> createState() => _InfoCardState();
+}
+
+class _InfoCardState extends State<InfoCard> {
+  final TextEditingController textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: cardColor,
+      color: widget.cardColor,
       child: Padding(
         padding: EdgeInsets.symmetric(
           vertical: 22,
@@ -131,26 +173,21 @@ class InfoCard extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
-                  child: Text(
-                    cardTitle,
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w500,
-                      color: cardTitlecolor,
-                    ),
+                  child: cardTitle(
+                    title: widget.cardTitle,
+                    titleColor: widget.cardTitlecolor,
                   ),
                 ),
               ],
             ),
             SizedBox(
               width: ScreenSize.getScreenWidth(context) * .45,
-              child: Lottie.asset(animationString),
+              child: Lottie.asset(widget.animationString),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16, top: 16),
               child: Text(
-                question,
-                // 'What should Melo call you ?',
+                widget.question,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
@@ -162,16 +199,26 @@ class InfoCard extends StatelessWidget {
                 left: 16,
                 right: 16,
               ),
-              child: TextField(
-                // controller: textEditingController,
-                cursorColor: AppColors.primary,
+              child: TextFormField(
+                controller: textEditingController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your ${widget.keyType}';
+                  } else {
+                    // TODO: Add username conditions
+                    _saveData(
+                        widget.keyType.toString(), textEditingController.text);
+                    return null;
+                  }
+                },
+                cursorColor: AppColors.primary900,
                 decoration: InputDecoration(
-                    focusColor: AppColors.primary,
+                    // focusColor: AppColors.primary900,
                     focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: AppColors.primary,
-                      ),
-                    )),
+                  borderSide: BorderSide(
+                    color: AppColors.primary900,
+                  ),
+                )),
               ),
             ),
           ],
@@ -179,4 +226,14 @@ class InfoCard extends StatelessWidget {
       ),
     );
   }
+
+  void _saveData(String keyString, String valuString) async {
+    final _prefs = await SharedPreferences.getInstance();
+    // _prefs.clear();
+    await _prefs.setString(keyString, valuString);
+    var nameis = await _prefs.getString(keyString);
+    debugPrint('User $keyString is $nameis');
+  }
 }
+
+
