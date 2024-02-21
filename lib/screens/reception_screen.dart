@@ -55,10 +55,10 @@ class _ReceptionScreenState extends State<ReceptionScreen> {
               SizedBox(height: 12),
               InfoCard(
                 cardColor: Colors.lightGreen.shade200,
-                cardTitle: 'Tell us your',
+                cardTitle: 'Your gender',
                 cardTitlecolor: Colors.teal,
                 animationString: 'assets/animations/gender_anim.json',
-                question: 'Choose your age',
+                question: 'Choose your gender',
               ),
               SizedBox(height: 12),
               InfoCard(
