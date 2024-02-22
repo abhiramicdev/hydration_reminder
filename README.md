@@ -16,3 +16,14 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 // Profile to be added, name, weight, age, gender
 //If Preg to be added
+//Monthly water intake
+//Firebase notification integration - 45 mins notification
+//Settings page , alaram, profile info update, water cup update
+//Profile image update
+//Water intake animation
+// Create avatar with ML Kit
+/* Low priority*/
+//language switcher
+// theme switcher
+
+

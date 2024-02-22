@@ -176,13 +176,7 @@ class _InfoCardState extends State<InfoCard> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16, top: 16),
-              child: Text(
-                widget.question,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              child: subTitle(text: widget.question),
             ),
             Padding(
               padding: const EdgeInsets.only(

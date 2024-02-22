@@ -11,4 +11,5 @@ class AppColors {
   static const primary700 = Color(0xFF155DDD);
   static const primary800 = Color(0xFF0F4AD8);
   static const primary900 = Color(0xFF0F4AD8);
+  static const purple = Color(0xFF6C63FF);
 }
