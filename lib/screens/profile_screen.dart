@@ -83,12 +83,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
-                subTitle(
-                  text: 'Your water intake should be',
-                  textColor: AppColors.purple,
+                SizedBox(height: 24),
+                Text(
+                  'Your water intake should be',
+                  style: TextStyle(
+                    color: AppColors.purple,
+                    fontSize: 20,
+                  ),
                 ),
-                SizedBox(height: 8),
+                SizedBox(height: 5),
                 Text(
                   '2120 ml',
                   style: TextStyle(
