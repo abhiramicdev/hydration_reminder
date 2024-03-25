@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// import 'package:hydration_reminder/screens/fhit_test.dart';
 import 'package:hydration_reminder/screens/hydration_screen.dart';
-import 'package:hydration_reminder/screens/profile_screen.dart';
-import 'package:hydration_reminder/screens/reception_screen.dart';
+// import 'package:hydration_reminder/screens/profile_screen.dart';
+// import 'package:hydration_reminder/screens/reception_screen.dart';
 import 'package:hydration_reminder/screens/launch_screen.dart';
-import 'package:hydration_reminder/utils/home_tab_screen.dart';
+// import 'package:hydration_reminder/utils/home_tab_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -77,7 +78,9 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (_) =>
-              nameis != null ? MyHydrationScreen() : ReceptionScreen(),
+              // nameis != null ?
+              MyHydrationScreen(),
+          // : ReceptionScreen(),
         ),
       );
     });
