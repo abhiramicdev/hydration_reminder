@@ -1,39 +1,84 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:hydration_reminder/ui/widgets/glass_clipper.dart';
 
 class MyHydrationScreen extends StatefulWidget {
-  const MyHydrationScreen({super.key});
+  final double screenHeight;
+  const MyHydrationScreen({super.key, required this.screenHeight});
 
   @override
   State<MyHydrationScreen> createState() => _MyHydrationScreenState();
 }
 
 class _MyHydrationScreenState extends State<MyHydrationScreen> {
+  int waterRqd = 2100;
+  int unitWaterShort = 150;
   double count = 0;
+  double stepsToFill = 0;
+  late double stepHeight;
+  int currentHydrationPrcnt = 0;
+  int currentWaterIntake = 0;
+
+  late double glassMaxHeight;
+  @override
+  void initState() {
+    // Max Glass Const height = half the screen height
+    glassMaxHeight = widget.screenHeight / 2;
+    double steps = waterRqd / unitWaterShort;
+    stepsToFill = steps.ceil().toDouble();
+    debugPrint('Steps: $stepsToFill');
+    stepHeight = glassMaxHeight / steps;
+    debugPrint("Hi HeightL  $stepHeight");
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (count > 9) {
-          } else {
-            setState(() {
+          setState(() {
+            if (count > stepsToFill - 1) {
+              debugPrint('Here $count && $stepsToFill');
+            } else {
               count++;
               debugPrint('Add button triggered! $count');
-            });
-          }
+              setState(() {
+                currentWaterIntake =
+                    ((count * (waterRqd / stepsToFill)).round().ceil()).toInt();
+                currentHydrationPrcnt = count * 100 ~/ stepsToFill;
+              });
+            }
+          });
         },
         child: Icon(Icons.add),
       ),
-      backgroundColor: Colors.pink,
+      backgroundColor: Colors.white,
       body: Center(
         child: Container(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.all(60.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Text(
+                  '$currentWaterIntake ml',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 32,
+                  ),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Today you are $currentHydrationPrcnt% hydrated',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(height: 45),
                 Stack(
                   children: [
                     ClipRRect(
@@ -47,12 +92,12 @@ class _MyHydrationScreenState extends State<MyHydrationScreen> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Container(
-                                height: count * 50,
+                                height: count * stepHeight,
                                 color: Colors.blue,
                               ),
                             ],
                           ),
-                          height: 10 * 50,
+                          height: glassMaxHeight,
                         ),
                       ),
                     ),
@@ -113,7 +158,6 @@ class GlassShape extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 32.0),
           child: Center(
             child: Container(
-              // height: 50 * 10,
               color: Colors.greenAccent,
               child: WaveAnimation(
                 heighCounter: 50 * countVal - 1,
@@ -124,138 +168,4 @@ class GlassShape extends StatelessWidget {
       ),
     );
   }
-}
-
-class WavePainter extends CustomPainter {
-  final double animationValue;
-
-  WavePainter(this.animationValue);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paintGreen = Paint()
-      ..color = Colors.green
-      ..style = PaintingStyle.fill;
-
-    final pathGreen = Path();
-
-    pathGreen.moveTo(0, size.height);
-
-    pathGreen.lineTo(0, size.height * 0.6);
-
-    for (var i = 0; i < size.width; i++) {
-      final x = i.toDouble();
-
-      final y = size.height * 0.56 +
-          animationValue * 30 * sin((i / size.width) * 3 * pi);
-
-      pathGreen.lineTo(x, y);
-    }
-
-    pathGreen.lineTo(size.width, size.height);
-
-    pathGreen.close();
-
-    canvas.drawPath(pathGreen, paintGreen);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
-class WaveAnimation extends StatefulWidget {
-  final double heighCounter;
-  WaveAnimation({required this.heighCounter});
-  @override
-  _WaveAnimationState createState() => _WaveAnimationState();
-}
-
-class _WaveAnimationState extends State<WaveAnimation>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 2),
-    )..repeat(reverse: true);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return CustomPaint(
-          size: Size(
-            MediaQuery.of(context).size.width,
-            widget.heighCounter,
-          ),
-          painter: WavePainter(_controller.value),
-        );
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-
-    super.dispose();
-  }
-}
-
-class MyClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-
-    // Move to the start of the wave.
-    path.moveTo(0, size.height * 0.3);
-
-    // Draw the wave using quadratic Bezier curves.
-    for (int i = 0; i < 5; i++) {
-      var x = size.width / 5 * i;
-      var y = size.height * (0.3 + 0.2 * sin((pi / 250) * (50 * x - 2 * 100)));
-      // if (i == 0) {
-      //   path.lineTo(x, y);
-      // } else {
-      path.quadraticBezierTo(x, y, x, y);
-      // }
-    }
-
-    // Draw the final segment of the wave.
-    path.lineTo(size.width, size.height * 0.3);
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-
-    // Close the path.
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
-}
-
-class GlassShapeClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-    path.moveTo(0, 10); // Move the pen to the point (10, 10)
-    path.lineTo(100, 10); // Draw a line from (10, 10) to (100, 10)
-    path.lineTo(100, 100); // Draw a line from (100, 10) to (100, 100)
-    path.lineTo(10, 100); // Draw a line from (100, 100) to (10, 100)
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

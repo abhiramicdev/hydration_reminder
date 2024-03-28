@@ -79,7 +79,9 @@ class _SplashScreenState extends State<SplashScreen> {
         MaterialPageRoute(
           builder: (_) =>
               // nameis != null ?
-              MyHydrationScreen(),
+              MyHydrationScreen(
+            screenHeight: MediaQuery.of(context).size.height,
+          ),
           // : ReceptionScreen(),
         ),
       );
